@@ -5,3 +5,4 @@ authors = ["Tomek <tomek7sa@gmail.com>"]
 
 [dependencies]
 chrono = "*"
+walkdir = "*"

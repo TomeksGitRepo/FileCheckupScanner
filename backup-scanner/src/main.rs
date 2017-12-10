@@ -1,10 +1,12 @@
 extern crate chrono;
+extern crate walkdir;
 
 use std::io;
 use std::fs;
 use std::path::Path;
 use std::time::*;
 use chrono::prelude::*;
+use walkdir::WalkDir;
 
 //TODO make use of this function
 /*fn visit_dirs(dir: &Path, cb: &Fn(&DirEntry)) -> io::Result<()> {
@@ -38,16 +40,28 @@ fn system_time_to_date_time(t: SystemTime) -> DateTime<Utc> {
     Utc.timestamp(sec, nsec)
 }
 
-fn main() {
+//Todo make passing parametr if needed
+fn recursivly_walking_dir_old() {
     if let Ok(entries) = fs::read_dir(".") {
         for entry in entries {
             if let Ok(entry) = entry {
                 if let Ok(metadata) = entry.metadata() {
-                    println!("{:?} {:?}", entry.path(), system_time_to_date_time(metadata.modified().unwrap()));
+                    let system_time = system_time_to_date_time(metadata.modified().unwrap());
+                    let datetime: DateTime<Utc> = system_time.into();
+                    println!(" {:?} {:?}", entry.path(), datetime );
                 } else {
                     println!("Couldn't get metadata for {:?}", entry.path());
                 }
             }
         }
+    }
+}
+
+fn main() {
+    for entry in WalkDir::new(".") {
+        let entry = entry.unwrap();
+        let system_time = entry.metadata().unwrap().modified().unwrap();
+        let datetime: DateTime<Utc> = system_time.into();
+        println!("{:?} {:?}",entry.path(), datetime);
     }
 }
