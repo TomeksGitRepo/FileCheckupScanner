@@ -1,0 +1,6 @@
+[package]
+name = "backup-scanner"
+version = "0.1.0"
+authors = ["Tomek <tomek7sa@gmail.com>"]
+
+[dependencies]
